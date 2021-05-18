@@ -1,0 +1,11 @@
+name : face3d
+dependencies :
+  - python=3.6
+  - pip
+  - tensorflow-gpu == 1.12.0
+  - keras==2.2.4
+  - pip :
+      - mtcnn
+      - pillow
+      - argparse
+      - scipy
