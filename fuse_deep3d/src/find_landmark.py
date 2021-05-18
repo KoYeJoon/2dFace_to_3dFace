@@ -9,8 +9,8 @@ def parse_args():
     desc = "Data preprocessing for Deep3DRecon."
     parser = argparse.ArgumentParser(description=desc)
 
-    parser.add_argument('--img_path', type=str, default='../data/input', help='original images folder')
-    parser.add_argument('--save_path', type=str, default='../data/preprocess_data/', help='custom path to save proccessed images and labels')
+    parser.add_argument('--img_path', type=str, default='./data/input', help='original images folder')
+    parser.add_argument('--save_path', type=str, default='./data/preprocess_data/', help='custom path to save proccessed images and labels')
     parser.add_argument('--opt', type=str, default='test', help='train/test mode')
 
     return parser.parse_args()
