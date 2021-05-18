@@ -8,3 +8,4 @@ network/
 output/
 BFM/
 renderer/
+lm_processed_data/
