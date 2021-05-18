@@ -4,13 +4,12 @@ import os
 import glob
 from mtcnn import MTCNN
 
-
 def parse_args():
     desc = "Data preprocessing for Deep3DRecon."
     parser = argparse.ArgumentParser(description=desc)
 
     parser.add_argument('--img_path', type=str, default='./data/input', help='original images folder')
-    parser.add_argument('--save_path', type=str, default='./data/preprocess_data/', help='custom path to save proccessed images and labels')
+    parser.add_argument('--save_path', type=str, default='./lm_preprocess_data/', help='custom path to save proccessed images and labels')
     parser.add_argument('--opt', type=str, default='test', help='train/test mode')
 
     return parser.parse_args()
@@ -18,7 +17,8 @@ def parse_args():
 
 def preprocessing_with_mtcnn(args):
     image_path = args.img_path
-    save_path = args.save_path
+    save_path = './lm_processed_data/'
+
 
     if not os.path.isdir(save_path):
         os.makedirs(save_path)
@@ -42,13 +42,13 @@ def preprocessing_with_mtcnn(args):
                             result['keypoints']['mouth_right']]
                 if args.opt == 'train' :
                     cv2.imwrite('%s%06d.jpg' % (save_path, file_n), img)
-                    with open('%s%06d.txt' % (save_path, file_n), "a") as f:
+                    with open('%s%06d.txt' % (save_path, file_n), "w") as f:
                         for i in features:
                             print(str(i[0]) + ' ' + str(i[1]), file=f)
 
                 else :
                     cv2.imwrite('%s%06d-%03d.jpg' % (save_path, file_n, count), img)
-                    with open('%s%06d-%03d.txt' % (save_path, file_n, count), "a") as f:
+                    with open('%s%06d-%03d.txt' % (save_path, file_n, count), "w") as f:
                         for i in features:
                             print(str(i[0]) + ' ' + str(i[1]), file=f)
                     count += 1

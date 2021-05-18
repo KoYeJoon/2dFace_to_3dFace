@@ -1,9 +1,9 @@
 import numpy as np 
 from scipy.io import loadmat,savemat
 from PIL import Image
-from skin import skinmask
+from src.skin import skinmask
 import argparse
-from utils import *
+from src.utils import *
 import os
 import glob
 import tensorflow as tf

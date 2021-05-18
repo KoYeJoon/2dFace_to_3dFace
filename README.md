@@ -1,12 +1,16 @@
 # 2Dface_to_3Dface
 
 | name | how to contact |
+| --- | --- |
+| Ko Ye Joon | [![Gmail Badge](https://img.shields.io/badge/Gmail-d14836?style=flat-square&logo=Gmail&logoColor=white&link=mailto:yejoon.ko@gmail.com)](mailto:yejoon.ko@gmail.com) |
+| Jeong Seung Won |  [![Gmail Badge](https://img.shields.io/badge/Gmail-d14836?style=flat-square&logo=Gmail&logoColor=white&link=mailto:jeongsw34@gmail.com)](mailto:jeongsw34@gmail.com) | 
+
 
 This is the project about super resolution, face reconstruction, face frontalization.  
 If you give image which contained one or more person to model, the model will produce 3d reconstruction face and frontalization face for image.
 
 <br>
-(the system structure)
+<b>(the system structure)</b>
 <br>
 Later , model image will be attached.
 
@@ -62,6 +66,12 @@ $ bazel test ...
 
 ### 2. What do you need to make 3d reconstruction face? 
 
+#### clone the repository
+```
+$ git clone https://github.com/KoYeJoon/2dFace_to_3dFace.git
+$ cd 2dFace_to_3dFace
+```
+
 #### for super resolution you have to ...
 
 ##### blah lbhallahlbhlahlbhalhlabl
@@ -71,30 +81,28 @@ $ bazel test ...
 
 #### for 3d reconstruction you have to ...
 
-##### i) clone the repository
-```
-$ git clone https://github.com/KoYeJoon/2dFace_to_3dFace.git
-$ cd 2dFace_to_3dFace
-```
 <br>
 
-##### ii) download Basel Face Model.
+##### i) download Basel Face Model.
 download "01_MorphableModel.mat" in [this site](https://faces.dmi.unibas.ch/bfm/main.php?nav=1-2&id=downloads, "BFM Model Site") and put into ./fuse_deep3d/BFM
 
 <br>
 
-##### iii) download CoarseData 
+##### ii) download CoarseData 
 Download Coarse data in the first row of Introduction part in [their repository](https://github.com/Juyong/3DFace,"Coarse Data"). 
 
 <br>
 
-##### iv) put the compiled rasterize_triangles_kernel.so into ./renderer folder.
+##### iii) put the compiled rasterize_triangles_kernel.so into ./renderer folder.
 
 <br>
 
-##### v) (optional) if you want to get pre-trained model, download pre-trained reconstruction network. --> 우리 모델이 좋으면 우리 모델로 나중에 수정 
+##### iv) (optional) if you want to get pre-trained model, download pre-trained reconstruction network. --> 우리 모델이 좋으면 우리 모델로 나중에 수정 
 download in [this link](https://drive.google.com/file/d/176LCdUDxAj7T2awQ5knPMPawq5Q2RUWM/view, "pretrained model") and put "FaceReconModel.pb" into ./network subfolder. 
 
+
+<br>
+<br>
 
 
 ### How to make 2d face to 3d face?
@@ -109,4 +117,22 @@ Below is argument list.
 [--input_dir] : your custom image input_dir
 [--output_dir] : where to save .obj files and frontalization image
 [--mode] : train/test
+```
+
+
+
+<br>
+<br>
+<br>
+
+
+
+# Citation
+```
+@inproceedings{deng2019accurate,
+    title={Accurate 3D Face Reconstruction with Weakly-Supervised Learning: From Single Image to Image Set},
+    author={Yu Deng and Jiaolong Yang and Sicheng Xu and Dong Chen and Yunde Jia and Xin Tong},
+    booktitle={IEEE Computer Vision and Pattern Recognition Workshops},
+    year={2019}
+}
 ```
