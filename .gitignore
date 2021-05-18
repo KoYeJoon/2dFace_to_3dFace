@@ -1,0 +1,7 @@
+fuse_deep3d/data/
+model/
+.DS_Store
+.idea/
+fuse_deep3d/network/
+fuse_deep3d/output/
+fuse_deep3d/BFM/
