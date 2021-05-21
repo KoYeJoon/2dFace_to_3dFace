@@ -33,14 +33,14 @@
                 output_nc: 3                             
                     phase: test                          
                preprocess: none                          
-      pretrain_model_path: /home/kio/jsw/Face-SPARNet/pretrain_models/SPARNetHD_V4_Attn2D_net_H-epoch10.pth	[default: ]
+      pretrain_model_path: ./pretrain_models/SPARNetHD_V4_Attn2D_net_H-epoch10.pth	[default: ]
                 res_depth: 10                            
-              results_dir: /home/kio/jsw/Face-SPARNet/output_test_images/yuna2	[default: ./results/]
+              results_dir: ./data_output/ondirection2    	[default: ./results/]
               save_as_dir:                               
                      seed: 123                           
            serial_batches: False                         
                    suffix:                               
-            test_img_path: ./test_images/yuna2.jpg       	[default: ]
+            test_img_path: ./data_input/onedirection2.png	[default: ]
              test_upscale: 1                             
                   verbose: False                         
 ----------------- End -------------------

@@ -84,10 +84,10 @@ def past_faces_back(img, hq_faces, tform_params, upscale=1):
 
 def save_imgs(img_list, save_dir):
     for idx, img in enumerate(img_list):
-        save_path = os.path.join(save_dir, '{:03d}.jpg'.format(idx))
+        save_path = os.path.join(save_dir, '{:06d}.jpg'.format(idx))
         io.imsave(save_path, img.astype(np.uint8))
 
-if __name__ == '__main__':
+def demo():
     opt = TestOptions().parse()
     #  face_detector = dlib.get_frontal_face_detector()
     face_detector = dlib.cnn_face_detection_model_v1('./pretrain_models/mmod_human_face_detector.dat')
@@ -99,23 +99,26 @@ if __name__ == '__main__':
     img = dlib.load_rgb_image(img_path)
     aligned_faces, tform_params = detect_and_align_faces(img, face_detector, lmk_predictor, template_path)
     # Save aligned LQ faces
-    save_lq_dir = os.path.join(opt.results_dir, 'LQ_faces') 
-    os.makedirs(save_lq_dir, exist_ok=True)
-    print('======> Saving aligned LQ faces to', save_lq_dir)
-    save_imgs(aligned_faces, save_lq_dir)
+    # save_lq_dir = os.path.join(opt.results_dir, 'LQ_faces')
+    # os.makedirs(save_lq_dir, exist_ok=True)
+    # print('======> Saving aligned LQ faces to', save_lq_dir)
+    # save_imgs(aligned_faces, save_lq_dir)
 
     enhance_model = def_models(opt)
     hq_faces = enhance_faces(aligned_faces, enhance_model)
     # Save LQ parsing maps and enhanced faces
-    save_hq_dir = os.path.join(opt.results_dir, 'HQ') 
+    # save_hq_dir = os.path.join(opt.results_dir, 'HQ')
+    save_hq_dir ="../../fuse_deep3d/data/input"
     os.makedirs(save_hq_dir, exist_ok=True)
     print('======> Save the enhanced faces.')
     save_imgs(hq_faces, save_hq_dir)
+    # print("hq_faces***************************************************************")
+    # print(hq_faces)
+    # print('======> Paste the enhanced faces back to the original image.')
+    # hq_img = past_faces_back(img, hq_faces, tform_params, upscale=opt.test_upscale)
+    # final_save_path = os.path.join(opt.results_dir, 'hq_final.jpg')
+    # print('======> Save final result to', final_save_path)
+    # io.imsave(final_save_path, hq_img)
 
-    print('======> Paste the enhanced faces back to the original image.')
-    hq_img = past_faces_back(img, hq_faces, tform_params, upscale=opt.test_upscale) 
-    final_save_path = os.path.join(opt.results_dir, 'hq_final.jpg') 
-    print('======> Save final result to', final_save_path)
-    io.imsave(final_save_path, hq_img)
-
-
+if __name__ == '__main__':
+    demo()
