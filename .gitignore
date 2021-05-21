@@ -10,3 +10,5 @@ BFM/
 renderer/
 lm_processed_data/
 pretrain_models/
+data_input/
+data_output/
