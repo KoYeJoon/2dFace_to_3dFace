@@ -30,7 +30,7 @@ class BaseOptions():
         parser.add_argument('--checkpoints_dir', type=str, default='./check_points', help='models are saved here')
         parser.add_argument('--debug', action='store_true', help='if specified, set to debug mode')
         # model parameters
-        parser.add_argument('--model', type=str, default='sparnet', help='chooses which model to train [parse|enhance]')
+        parser.add_argument('--model_name', type=str, default='sparnethd', help='chooses which model to train [parse|enhance]')
         parser.add_argument('--att_name', type=str, default='spar', help='attention type [spar|spar3d]')
         parser.add_argument('--res_depth', type=int, default=10, help='depth of residual layers')
         parser.add_argument('--bottleneck_size', type=int, default=4, help='bottleneck feature size in hourglass block')
@@ -41,7 +41,7 @@ class BaseOptions():
         parser.add_argument('--n_layers_D', type=int, default=4, help='downsampling layers in discriminator')
         parser.add_argument('--num_D', type=int, default=3, help='numbers of discriminators')
 
-        parser.add_argument('--Gnorm', type=str, default='bn', help='generator norm [in | bn | none]')
+        parser.add_argument('--Gnorm', type=str, default='in', help='generator norm [in | bn | none]')
         parser.add_argument('--Dnorm', type=str, default='none', help='discriminator norm [in | bn | none]')
         parser.add_argument('--init_type', type=str, default='normal', help='network initialization [normal | xavier | kaiming | orthogonal]')
         parser.add_argument('--init_gain', type=float, default=0.02, help='scaling factor for normal, xavier and orthogonal.')
@@ -75,7 +75,7 @@ class BaseOptions():
         opt, _ = parser.parse_known_args()
 
         # modify model-related parser options
-        model_name = opt.model
+        model_name = opt.model_name
         model_option_setter = models.get_option_setter(model_name)
         parser = model_option_setter(parser, self.isTrain)
         opt, _ = parser.parse_known_args()  # parse again with new defaults

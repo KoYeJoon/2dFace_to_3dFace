@@ -10,8 +10,6 @@ from SR.src.options.test_options import TestOptions
 
 if __name__ == '__main__':
     opt = TestOptions().parse()
-    print("testoptions parse***************************************")
-    print(opt)
     opt = test_enhance_single_unalign.sr_demo()
     reconstruction3d.demo(opt)
     #reconstruction3d.demo()

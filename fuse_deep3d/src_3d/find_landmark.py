@@ -26,26 +26,27 @@ def preprocessing_with_mtcnn(args):
     img_list = sorted(glob.glob(image_path + '/' + '*.png'))
     img_list += sorted(glob.glob(image_path + '/' + '*.jpg'))
 
-
     file_n = 1
     for file in img_list:
         img = cv2.imread(file)
         #img = cv2.cvtColor(cv2.imread(file), cv2.COLOR_BGR2RGB)
-        print(file)
         detector = MTCNN()
         faces = detector.detect_faces(img)
-
+        #count = 1
         if len(faces) > 0:
-            count = 1
+            #count = 1
             for result in faces :
                 features = [result['keypoints']['left_eye'], result['keypoints']['right_eye'],result['keypoints']['nose'], result['keypoints']['mouth_left'],
                             result['keypoints']['mouth_right']]
-
-                cv2.imwrite('%s%06d-%03d.jpg' % (save_path, file_n, count), img)
-                with open('%s%06d-%03d.txt' % (save_path, file_n, count), "w") as f:
+                cv2.imwrite('%s%06d.jpg' % (save_path, file_n), img)
+                with open('%s%06d.txt' % (save_path, file_n), "w") as f:
                     for i in features:
                         print(str(i[0]) + ' ' + str(i[1]), file=f)
-                count += 1
+                #count += 1
+            file_n += 1
+        else :
+            print("*** %s%06d.jpg Fail to dectect keypoints with mtcnn ***" % (save_path, file_n))
+            #count += 1
             file_n += 1
 
 

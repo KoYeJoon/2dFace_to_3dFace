@@ -84,7 +84,7 @@ def past_faces_back(img, hq_faces, tform_params, upscale=1):
 
 def save_imgs(img_list, save_dir):
     for idx, img in enumerate(img_list):
-        save_path = os.path.join(save_dir, '{:06d}.jpg'.format(idx))
+        save_path = os.path.join(save_dir, '{0:06d}.jpg'.format(idx+1))
         io.imsave(save_path, img.astype(np.uint8))
 
 def sr_demo():

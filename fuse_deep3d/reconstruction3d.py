@@ -57,16 +57,16 @@ def demo(args):
     # input and output folder
     #args = parse_args()
 
-    print("fuse deep3d args============================")
-    print(args)
     # find_landmark
     preprocessing_with_mtcnn(args)
-    image_path = './lm_processed_data/'
+    after_mtcnn_image_path = './lm_processed_data/'
     save_path = args.objface_results_dir
     if not os.path.exists(save_path):
         os.makedirs(save_path)
-    img_list = glob.glob(image_path + '/' + '*.png')
-    img_list += glob.glob(image_path + '/' + '*.jpg')
+    img_list = sorted(glob.glob(after_mtcnn_image_path + '/' + '*.png'))
+    img_list += sorted(glob.glob(after_mtcnn_image_path + '/' + '*.jpg'))
+    print("before recon3d img list_______________")
+    print(sorted(glob.glob(after_mtcnn_image_path + '/' + '*.jpg')))
 
 
     # read BFM face model
@@ -112,6 +112,7 @@ def demo(args):
 
 
         with tf.Session() as sess:
+            #init_op = tf.initialize_all_variables()
             if not args.use_pb:
                 restore_weights(sess, opt)
 
@@ -123,16 +124,9 @@ def demo(args):
                 img, lm = load_img(file, file.replace('png', 'txt').replace('jpg', 'txt'))
                 # preprocess input image
                 input_img, lm_new, transform_params = align_img(img, lm, lm3D)
-
-                coeff_, face_shape_, face_texture_, face_color_, landmarks_2d_, recon_img_, tri_ = sess.run([coeff, \
-                                                                                                             face_shape,
-                                                                                                             face_texture,
-                                                                                                             face_color,
-                                                                                                             landmarks_2d,
-                                                                                                             recon_img,
-                                                                                                             tri],
-                                                                                                            feed_dict={
-                                                                                                                images: input_img})
+                sess.run(tf.global_variables_initializer())
+                coeff_, face_shape_, face_texture_, face_color_, landmarks_2d_, recon_img_, tri_ \
+                    = sess.run([coeff,face_shape,face_texture,face_color,landmarks_2d,recon_img,tri],feed_dict={images: input_img})
 
                 # reshape outputs
                 input_img = np.squeeze(input_img)
