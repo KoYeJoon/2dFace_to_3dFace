@@ -1,7 +1,10 @@
 import tensorflow as tf 
 from tensorflow.contrib.slim.nets import resnet_v1
 slim = tf.contrib.slim
-from inception_resnet_v1 import inception_resnet_v1
+import sys
+import os
+sys.path.append("./fuse_deep3d/src_3d/")
+from src_3d.inception_resnet_v1 import inception_resnet_v1
 ###############################################################################################
 #Define R-Net and Perceptual-Net for 3D face reconstruction
 ###############################################################################################

@@ -87,12 +87,12 @@ def save_imgs(img_list, save_dir):
         save_path = os.path.join(save_dir, '{:06d}.jpg'.format(idx))
         io.imsave(save_path, img.astype(np.uint8))
 
-def demo():
+def sr_demo():
     opt = TestOptions().parse()
     #  face_detector = dlib.get_frontal_face_detector()
-    face_detector = dlib.cnn_face_detection_model_v1('./pretrain_models/mmod_human_face_detector.dat')
-    lmk_predictor = dlib.shape_predictor('./pretrain_models/shape_predictor_5_face_landmarks.dat')
-    template_path = './pretrain_models/FFHQ_template.npy'
+    face_detector = dlib.cnn_face_detection_model_v1('./SR_pretrain_models/mmod_human_face_detector.dat')
+    lmk_predictor = dlib.shape_predictor('./SR_pretrain_models/shape_predictor_5_face_landmarks.dat')
+    template_path = './SR_pretrain_models/FFHQ_template.npy'
 
     print('======> Loading images, crop and align faces.')
     img_path = opt.test_img_path 
@@ -108,7 +108,7 @@ def demo():
     hq_faces = enhance_faces(aligned_faces, enhance_model)
     # Save LQ parsing maps and enhanced faces
     # save_hq_dir = os.path.join(opt.results_dir, 'HQ')
-    save_hq_dir ="../../fuse_deep3d/data/input"
+    save_hq_dir ="./fuse_deep3d/data/input"
     os.makedirs(save_hq_dir, exist_ok=True)
     print('======> Save the enhanced faces.')
     save_imgs(hq_faces, save_hq_dir)
@@ -119,6 +119,7 @@ def demo():
     # final_save_path = os.path.join(opt.results_dir, 'hq_final.jpg')
     # print('======> Save final result to', final_save_path)
     # io.imsave(final_save_path, hq_img)
+    return opt
 
 if __name__ == '__main__':
-    demo()
+    sr_demo()

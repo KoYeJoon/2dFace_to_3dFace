@@ -9,7 +9,7 @@ output/
 BFM/
 renderer/
 lm_processed_data/
-pretrain_models/
+SR_pretrain_models/
 data_input/
 data_output/
 check_points/

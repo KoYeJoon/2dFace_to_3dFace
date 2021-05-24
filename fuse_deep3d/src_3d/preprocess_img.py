@@ -1,9 +1,12 @@
 import numpy as np 
 from scipy.io import loadmat,savemat
 from PIL import Image
-from src.skin import skinmask
+import sys
+import os
+sys.path.append("src_3d")
+from src_3d.skin import skinmask
 import argparse
-from src.utils import *
+from src_3d.utils import *
 import os
 import glob
 import tensorflow as tf
