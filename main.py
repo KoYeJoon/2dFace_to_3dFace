@@ -9,7 +9,5 @@ from fuse_deep3d import reconstruction3d
 from SR.src.options.test_options import TestOptions
 
 if __name__ == '__main__':
-    opt = TestOptions().parse()
     opt = test_enhance_single_unalign.sr_demo()
     reconstruction3d.demo(opt)
-    #reconstruction3d.demo()

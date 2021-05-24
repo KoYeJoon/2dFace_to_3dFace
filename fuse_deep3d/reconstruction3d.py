@@ -65,8 +65,6 @@ def demo(args):
         os.makedirs(save_path)
     img_list = sorted(glob.glob(after_mtcnn_image_path + '/' + '*.png'))
     img_list += sorted(glob.glob(after_mtcnn_image_path + '/' + '*.jpg'))
-    print("before recon3d img list_______________")
-    print(sorted(glob.glob(after_mtcnn_image_path + '/' + '*.jpg')))
 
 
     # read BFM face model
