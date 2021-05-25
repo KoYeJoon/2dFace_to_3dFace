@@ -112,7 +112,6 @@ def load_img(img_path,lm_path):
 
 	image = Image.open(img_path)
 	lm = np.loadtxt(lm_path)
-
 	return image,lm
 
 # save 3D face to obj file

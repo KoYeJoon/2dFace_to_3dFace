@@ -2,6 +2,7 @@ import tensorflow as tf
 import numpy as np
 from PIL import Image
 import os
+import io
 import glob
 import platform
 import argparse
@@ -11,13 +12,12 @@ import sys
 import os
 sys.path.append("src_3d/")
 
-from src_3d import find_landmark
-from src_3d.find_landmark import preprocessing_with_mtcnn
 from src_3d.find_landmark import preprocessing_with_mtcnn
 from src_3d.preprocess_img import align_img
 from src_3d.utils import *
 from src_3d.face_decoder import Face3D
 from src_3d.options import Option
+import PIL
 
 from SR.src.options.test_options import TestOptions
 
@@ -55,23 +55,18 @@ def restore_weights(sess, opt):
 
 def demo(args):
     # input and output folder
-    #args = parse_args()
-
-    # find_landmark
-    preprocessing_with_mtcnn(args)
-    after_mtcnn_image_path = './lm_processed_data/'
+    preprocessing_with_mtcnn()
+    image_path = './lm_processed_data'
     save_path = args.objface_results_dir
     if not os.path.exists(save_path):
         os.makedirs(save_path)
-    img_list = sorted(glob.glob(after_mtcnn_image_path + '/' + '*.png'))
-    img_list += sorted(glob.glob(after_mtcnn_image_path + '/' + '*.jpg'))
-
+    img_list = glob.glob(image_path + '/' + '*.png')
+    img_list += glob.glob(image_path + '/' + '*.jpg')
 
     # read BFM face model
     # transfer original BFM model to our model
     if not os.path.isfile('./BFM/BFM_model_front.mat'):
         transferBFM09()
-
 
     # read standard landmarks for preprocessing images
     lm3D = load_lm3d()
@@ -83,11 +78,10 @@ def demo(args):
         with tf.device('/cpu:0'):
             opt = Option(is_train=False)
         opt.batch_size = 1
-        #opt.pretrain_weights = args.pretrain_weights
         opt.pretrain_weights = "./BFM/"
         FaceReconstructor = Face3D()
         images = tf.placeholder(name='input_imgs', shape=[opt.batch_size, 224, 224, 3], dtype=tf.float32)
-
+        args.use_pb = 1
         if args.use_pb and os.path.isfile('network/FaceReconModel.pb'):
             print('Using pre-trained .pb file.')
             graph_def = load_graph('network/FaceReconModel.pb')
@@ -108,23 +102,29 @@ def demo(args):
         recon_img = FaceReconstructor.render_imgs
         tri = FaceReconstructor.facemodel.face_buf
 
-
         with tf.Session() as sess:
-            #init_op = tf.initialize_all_variables()
             if not args.use_pb:
                 restore_weights(sess, opt)
 
             print('reconstructing...')
             for file in img_list:
+                sess.run(tf.global_variables_initializer())
                 n += 1
                 print(n)
                 # load images and corresponding 5 facial landmarks
                 img, lm = load_img(file, file.replace('png', 'txt').replace('jpg', 'txt'))
                 # preprocess input image
                 input_img, lm_new, transform_params = align_img(img, lm, lm3D)
-                sess.run(tf.global_variables_initializer())
-                coeff_, face_shape_, face_texture_, face_color_, landmarks_2d_, recon_img_, tri_ \
-                    = sess.run([coeff,face_shape,face_texture,face_color,landmarks_2d,recon_img,tri],feed_dict={images: input_img})
+
+                coeff_, face_shape_, face_texture_, face_color_, landmarks_2d_, recon_img_, tri_ = sess.run([coeff, \
+                                                                                                             face_shape,
+                                                                                                             face_texture,
+                                                                                                             face_color,
+                                                                                                             landmarks_2d,
+                                                                                                             recon_img,
+                                                                                                             tri],
+                                                                                                            feed_dict={
+                                                                                                                images: input_img})
 
                 # reshape outputs
                 input_img = np.squeeze(input_img)
@@ -148,6 +148,5 @@ def demo(args):
                          face_shape_, tri_,
                          np.clip(face_color_, 0, 255) / 255)  # 3D reconstruction face (in canonical view)
 
-
-if __name__ == '__main__':
-    demo(args)
+# if __name__ == '__main__':
+#     demo(args)

@@ -87,8 +87,8 @@ def save_imgs(img_list, save_dir):
         save_path = os.path.join(save_dir, '{0:06d}.jpg'.format(idx+1))
         io.imsave(save_path, img.astype(np.uint8))
 
-def sr_demo():
-    opt = TestOptions().parse()
+def sr_demo(opt):
+    # opt = TestOptions().parse()
     #  face_detector = dlib.get_frontal_face_detector()
     face_detector = dlib.cnn_face_detection_model_v1('./SR_pretrain_models/mmod_human_face_detector.dat')
     lmk_predictor = dlib.shape_predictor('./SR_pretrain_models/shape_predictor_5_face_landmarks.dat')
@@ -122,4 +122,5 @@ def sr_demo():
     return opt
 
 if __name__ == '__main__':
-    sr_demo()
+    opt = TestOptions().parse()
+    sr_demo(opt)

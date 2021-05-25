@@ -13,3 +13,4 @@ SR_pretrain_models/
 data_input/
 data_output/
 check_points/
+network/

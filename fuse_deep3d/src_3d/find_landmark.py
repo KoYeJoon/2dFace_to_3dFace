@@ -15,7 +15,7 @@ from mtcnn import MTCNN
 #     return parser.parse_args()
 
 
-def preprocessing_with_mtcnn(args):
+def preprocessing_with_mtcnn():
     image_path = './fuse_deep3d/data/input/'
     save_path = './lm_processed_data/'
 
