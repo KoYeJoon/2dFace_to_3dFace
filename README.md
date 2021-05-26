@@ -33,10 +33,14 @@ referred :
 * conda activate face3d
 * tensorflow-gpu == 1.12.0 (conda install tensorflow-gpu == 1.12.0 )
 * keras==2.2.4
+* torch==1.5.1 #pip uninstall tensorboard
+* torchvision==0.6.1
 * mtcnn
 * pillow
 * argparse
 * scipy
+* scikit-image
+* imgaug
 ```
 
 or
@@ -56,6 +60,42 @@ $ git clone https://github.com/google/tf_mesh_renderer.git
 $ cd tf_mesh_renderer
 $ git checkout ba27ea1798
 $ git checkout master WORKSPACE
+```
+
+##### 1-3. project directory structure
+```
+.
+2dFace_to_3dFace
+│   README.md
+│   main.py    
+│   environment.yaml
+│
+└───BFM
+│      BFM_model_front.mat
+│      similarity_Lm3D_all.mat
+│   
+└───network
+│       FaceReconModel.pb
+│   
+└───fuse_deep3d
+│        rasterize_triangles_kernel.soata
+│        │     └───input # SR results images will be saved here
+│        │   
+│        └───renderer
+│        │          rasterize_triangles_kernel.so
+│        │          ...
+│        │ 
+│        └───src_3d
+└───SR_pretrain_models
+│           FFHQ_template.npy
+│           mmod_human_face_detector.dat
+│           shape_predictor_5_face_landmarks.dat
+│           SPARNetHD_V4_Attn2D_net_H-epoch10.pth       
+└───SR
+│    └───src
+│          ...
+│
+...
 ```
 
 set <b>-D_GLIBCXX_USE_CXX11_ABI=1</b> in ./mesh_renderer/kernels/BUILD
@@ -89,7 +129,7 @@ download "01_MorphableModel.mat" in [this site](https://faces.dmi.unibas.ch/bfm/
 <br>
 
 ##### ii) download CoarseData 
-Download Coarse data in the first row of Introduction part in [their repository](https://github.com/Juyong/3DFace,"Coarse Data"). 
+Download Coarse data in the first row of Introduction part in [their repository](https://github.com/Juyong/3DFace). 
 
 <br>
 
@@ -97,7 +137,15 @@ Download Coarse data in the first row of Introduction part in [their repository]
 
 <br>
 
-##### iv) (optional) if you want to get pre-trained model, download pre-trained reconstruction network. --> 우리 모델이 좋으면 우리 모델로 나중에 수정 
+##### iv) Download Face-SPARNet pretrained models
+Download Face-SPARNet pretrained models in from the following link and put then in *./SR_pretrain_models*
+
+* [GoogleDrive](https://drive.google.com/drive/folders/1PZ_TP77_rs0z56WZausgK0m2oTxZsgB2)
+* [BaiduNetDisk](https://pan.baidu.com/share/init?surl=zYimaAnIgMIKBf9KANpxog)
+
+<br>
+
+##### v) (optional) if you want to get pre-trained model, download pre-trained reconstruction network. --> 우리 모델이 좋으면 우리 모델로 나중에 수정 
 download in [this link](https://drive.google.com/file/d/176LCdUDxAj7T2awQ5knPMPawq5Q2RUWM/view, "pretrained model") and put "FaceReconModel.pb" into ./network subfolder. 
 
 
@@ -109,14 +157,13 @@ download in [this link](https://drive.google.com/file/d/176LCdUDxAj7T2awQ5knPMPa
 you can use easily !!
 
 ```
-python main.py --[arguments]
+python main.py [--arguments]
 ```
 
 Below is argument list.
 ```
-[--input_dir] : your custom image input_dir
-[--output_dir] : where to save .obj files and frontalization image
-[--mode] : train/test
+[--test_img_path] : your custom image input image
+[--objface_results_dir] : where to save .obj face files
 ```
 
 

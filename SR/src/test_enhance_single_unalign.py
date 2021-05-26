@@ -88,6 +88,7 @@ def save_imgs(img_list, save_dir):
         io.imsave(save_path, img.astype(np.uint8))
 
 def sr_demo(opt):
+    opt.pretrain_model_path = "./SR_pretrain_models/SPARNetHD_V4_Attn2D_net_H-epoch10.pth"
     # opt = TestOptions().parse()
     #  face_detector = dlib.get_frontal_face_detector()
     face_detector = dlib.cnn_face_detection_model_v1('./SR_pretrain_models/mmod_human_face_detector.dat')
