@@ -1,9 +1,12 @@
 import numpy as np 
 from scipy.io import loadmat,savemat
 from PIL import Image
-from src.skin import skinmask
+import sys
+import os
+sys.path.append("src_3d")
+from src_3d.skin import skinmask
 import argparse
-from src.utils import *
+from src_3d.utils import *
 import os
 import glob
 import tensorflow as tf
@@ -94,22 +97,20 @@ def get_skinmask(img):
 	skin_img = skinmask(img)
 	return skin_img
 
-def parse_args():
-    desc = "Data preprocessing for Deep3DRecon."
-    parser = argparse.ArgumentParser(description=desc)
-
-    parser.add_argument('--img_path', type=str, default='./input', help='original images folder')
-    parser.add_argument('--save_path', type=str, default='./processed_data', help='custom path to save proccessed images and labels')
-
-
-    return parser.parse_args()
+# def parse_args():
+#     desc = "Data preprocessing for Deep3DRecon."
+#     parser = argparse.ArgumentParser(description=desc)
+#
+#     parser.add_argument('--img_path', type=str, default='./input', help='original images folder')
+#     parser.add_argument('--save_path', type=str, default='./processed_data', help='custom path to save proccessed images and labels')
+#
+#
+#     return parser.parse_args()
 
 # training data pre-processing
-def preprocessing():
-
-	args = parse_args()
-	image_path = args.img_path
-	save_path = args.save_path
+def preprocessing(args):
+	image_path = './lm_processed_data/'
+	save_path = args.objface_results_dir
 	if not os.path.isdir(save_path):
 		os.makedirs(save_path)
 	if not os.path.isdir(os.path.join(save_path,'lm')):

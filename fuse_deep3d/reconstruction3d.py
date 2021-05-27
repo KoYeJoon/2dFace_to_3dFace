@@ -2,33 +2,41 @@ import tensorflow as tf
 import numpy as np
 from PIL import Image
 import os
+import io
 import glob
 import platform
 import argparse
 from scipy.io import loadmat, savemat
 
-from src.find_landmark import preprocessing_with_mtcnn
-from src.preprocess_img import align_img
-from src.utils import *
-from src.face_decoder import Face3D
-from src.options import Option
+import sys
+import os
+sys.path.append("src_3d/")
+
+from src_3d.find_landmark import preprocessing_with_mtcnn
+from src_3d.preprocess_img import align_img
+from src_3d.utils import *
+from src_3d.face_decoder import Face3D
+from src_3d.options import Option
+import PIL
+
+from SR.src.options.test_options import TestOptions
 
 
 is_windows = platform.system() == "Windows"
 
-
-def parse_args():
-    desc = "2Dto3DFaceReconstruction"
-    parser = argparse.ArgumentParser(description=desc)
-    parser.add_argument('--pretrain_weights', type=str, default=None, help='path for pre-trained model')
-    parser.add_argument('--use_pb', type=int, default=1, help='validation data folder')
-    parser.add_argument('--img_path', type=str, default='data/input', help='original images folder')
-    parser.add_argument('--save_path', type=str, default='output/pretrained',
-                        help='custom path to save proccessed images and labels')
-    parser.add_argument('--opt', type=str, default='test',
-                        help='train/test')
-
-    return parser.parse_args()
+#
+# def parse_args():
+#     desc = "2Dto3DFaceReconstruction"
+#     parser = argparse.ArgumentParser(description=desc)
+#     parser.add_argument('--pretrain_model_path', type=str, default=None, help='path for pre-trained model')
+#     parser.add_argument('--use_pb', type=int, default=1, help='validation data folder')
+#     parser.add_argument('--test_img_path', type=str, default='data/input', help='original images folder')
+#     parser.add_argument('--results_dir', type=str, default='output/pretrained',
+#                         help='custom path to save proccessed images and labels')
+#     parser.add_argument('--opt', type=str, default='test',
+#                         help='train/test')
+#
+#     return parser.parse_args()
 
 
 def restore_weights(sess, opt):
@@ -45,26 +53,20 @@ def restore_weights(sess, opt):
     saver.restore(sess, opt.pretrain_weights)
 
 
-def demo():
+def demo(args):
     # input and output folder
-    args = parse_args()
-
-    # find_landmark
-    preprocessing_with_mtcnn(args)
-    image_path = './lm_processed_data/'
-
-    save_path = args.save_path
+    preprocessing_with_mtcnn()
+    image_path = './lm_processed_data'
+    save_path = args.objface_results_dir
     if not os.path.exists(save_path):
         os.makedirs(save_path)
     img_list = glob.glob(image_path + '/' + '*.png')
     img_list += glob.glob(image_path + '/' + '*.jpg')
 
-
     # read BFM face model
     # transfer original BFM model to our model
     if not os.path.isfile('./BFM/BFM_model_front.mat'):
         transferBFM09()
-
 
     # read standard landmarks for preprocessing images
     lm3D = load_lm3d()
@@ -76,11 +78,10 @@ def demo():
         with tf.device('/cpu:0'):
             opt = Option(is_train=False)
         opt.batch_size = 1
-        opt.pretrain_weights = args.pretrain_weights
-
+        opt.pretrain_weights = "./BFM/"
         FaceReconstructor = Face3D()
         images = tf.placeholder(name='input_imgs', shape=[opt.batch_size, 224, 224, 3], dtype=tf.float32)
-
+        args.use_pb = 1
         if args.use_pb and os.path.isfile('network/FaceReconModel.pb'):
             print('Using pre-trained .pb file.')
             graph_def = load_graph('network/FaceReconModel.pb')
@@ -89,7 +90,7 @@ def demo():
             coeff = graph.get_tensor_by_name('resnet/coeff:0')
         else:
             print('Using pre-trained .ckpt file: %s' % opt.pretrain_weights)
-            import networks
+            from src_3d import networks
             coeff = networks.R_Net(images, is_training=False)
 
         # reconstructing faces
@@ -101,13 +102,13 @@ def demo():
         recon_img = FaceReconstructor.render_imgs
         tri = FaceReconstructor.facemodel.face_buf
 
-
         with tf.Session() as sess:
             if not args.use_pb:
                 restore_weights(sess, opt)
 
             print('reconstructing...')
             for file in img_list:
+                sess.run(tf.global_variables_initializer())
                 n += 1
                 print(n)
                 # load images and corresponding 5 facial landmarks
@@ -147,6 +148,5 @@ def demo():
                          face_shape_, tri_,
                          np.clip(face_color_, 0, 255) / 255)  # 3D reconstruction face (in canonical view)
 
-
-if __name__ == '__main__':
-    demo()
+# if __name__ == '__main__':
+#     demo(args)

@@ -5,7 +5,9 @@ from scipy.io import loadmat
 import platform
 
 is_windows = platform.system() == "Windows"
-
+import sys
+import os
+sys.path.append("../renderer")
 if not is_windows:
 	from renderer import mesh_renderer
 ###############################################################################################
