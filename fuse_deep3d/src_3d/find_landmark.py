@@ -17,7 +17,7 @@ from mtcnn import MTCNN
 
 def preprocessing_with_mtcnn():
     image_path = './fuse_deep3d/data/input/'
-    save_path = './lm_processed_data/'
+    save_path = './fuse_deep3d/lm_processed_data/'
 
 
     if not os.path.isdir(save_path):

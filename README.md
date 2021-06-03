@@ -41,6 +41,9 @@ referred :
 * scipy
 * scikit-image
 * imgaug
+* opencv-python
+* dlib
+* tqdm
 ```
 
 or
@@ -156,12 +159,17 @@ download in [this link](https://drive.google.com/file/d/176LCdUDxAj7T2awQ5knPMPa
 ### How to make 2d face to 3d face?
 you can use easily !!
 
+1. put in your custom image or video in ./data_input directory
+
+
+2. run !!
 ```
 python main.py [--arguments]
 ```
 
 Below is argument list.
 ```
+[--opt] : image/ video default : image
 [--test_img_path] : your custom image input image
 [--objface_results_dir] : where to save .obj face files
 ```
