@@ -10,7 +10,7 @@ class TestOptions(BaseOptions):
     def initialize(self, parser):
         parser = BaseOptions.initialize(self, parser)  # define shared options
         parser.add_argument('--ntest', type=int, default=float("inf"), help='# of test examples.')
-        parser.add_argument('--test_img_path', type=str, default='./data_input/yejoon2.jpg', help='path of single test image.')
+        parser.add_argument('--test_img_path', type=str, default='./data_input/', help='path of single test image.')
         parser.add_argument('--test_upscale', type=int, default=1, help='upscale single test image.')
         parser.add_argument('--results_dir', type=str, default='./fuse_deep3d/data/input', help='saves results here.')
         parser.add_argument('--save_as_dir', type=str, default='', help='save results in different dir.')
@@ -23,6 +23,8 @@ class TestOptions(BaseOptions):
         parser.set_defaults(model='test')
         # To avoid cropping, the load_size should be the same as crop_size
         parser.set_defaults(load_size=parser.get_default('crop_size'))
+        # parser for image/video
+        parser.add_argument('--type', type=str, default='image', help='what your input type image/video')
         # parser for deep3d code
         parser.add_argument('--use_pb', type=int, default=1, help='validation data folder')
         parser.add_argument('--objface_results_dir', type=str, default='./data_output', help='saves 3d face results here.')

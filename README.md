@@ -120,15 +120,8 @@ $ git clone https://github.com/KoYeJoon/2dFace_to_3dFace.git
 $ cd 2dFace_to_3dFace
 ```
 
-#### for super resolution you have to ...
-
-##### blah lbhallahlbhlahlbhalhlabl
-
-<br>
-<br>
-
-#### for 3d reconstruction you have to ...
-
+#### for testing you have to ...
+  
 <br>
 
 ##### i) download Basel Face Model.
@@ -164,7 +157,8 @@ download in [this link](https://drive.google.com/file/d/176LCdUDxAj7T2awQ5knPMPa
 ### How to make 2d face to 3d face?
 you can use easily !!
 
-1. put in your custom image or video in ./data_input directory
+1. put in your custom image or video in ./data_input directory (you can change name of input_directory. but if you 
+   change name, you have to give argument when you run main.py)
 
 
 2. run !!
@@ -174,9 +168,9 @@ python main.py [--arguments]
 
 Below is argument list.
 ```
-[--opt] : image/ video default : image
-[--test_img_path] : your custom image input image
-[--objface_results_dir] : where to save .obj face files
+[--type] : image/ video, default : image
+[--test_img_path] : your custom image input image, default : ./data_input
+[--objface_results_dir] : where to save .obj face files, default : ./data_output
 ```
 
 
@@ -194,5 +188,12 @@ Below is argument list.
     author={Yu Deng and Jiaolong Yang and Sicheng Xu and Dong Chen and Yunde Jia and Xin Tong},
     booktitle={IEEE Computer Vision and Pattern Recognition Workshops},
     year={2019}
+}
+
+@InProceedings{ChenSPARNet,
+    author = {Chen, Chaofeng and Gong, Dihong and Wang, Hao and Li, Zhifeng and Wong, Kwan-Yee K.},
+    title = {Learning Spatial Attention for Face Super-Resolution},
+    Journal = {IEEE Transactions on Image Processing (TIP)},
+    year = {2020}
 }
 ```
