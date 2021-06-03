@@ -64,6 +64,8 @@ $ cd tf_mesh_renderer
 $ git checkout ba27ea1798
 $ git checkout master WORKSPACE
 ```
+  
+  
 
 ##### 1-3. project directory structure
 ```
@@ -77,6 +79,9 @@ $ git checkout master WORKSPACE
 │      BFM_model_front.mat
 │      similarity_Lm3D_all.mat
 │   
+└───data_input
+│       video/image for input
+│
 └───network
 │       FaceReconModel.pb
 │   
