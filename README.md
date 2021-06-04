@@ -44,6 +44,7 @@ referred :
 * opencv-python
 * dlib
 * tqdm
+* PyQt5==5.15.1
 ```
 
 or
@@ -190,7 +191,8 @@ Below is argument list.
 ### 3. revision history
 
 * 21.06.04. extend input type(you can try not only image but also image directory)
-* 21.06.xx. extend gui program (use pyqt), input type(video)
+* 21.06.xx. extend gui program (use pyqt), input type(image)
+* 21.06.xx. extend gui program, input type(image, video)
 
 
 
