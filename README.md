@@ -157,8 +157,15 @@ download in [this link](https://drive.google.com/file/d/176LCdUDxAj7T2awQ5knPMPa
 ### How to make 2d face to 3d face?
 you can use easily !!
 
-1. put in your custom image or video in ./data_input directory (you can change name of input_directory. but if you 
-   change name, you have to give argument when you run main.py)
+1. [optional] put in your custom image in ./data_input directory 
+```
+(Precautions)
+* you can change name of input_directory. 
+but if you change name, you have to give argument when you run main.py
+* if you want to give a input type='image', you can skip. 
+but you have to give argument(--type image --test_img_path ./your_img_path) when you run.
+```   
+
 
 
 2. run !!
@@ -168,8 +175,8 @@ python main.py [--arguments]
 
 Below is argument list.
 ```
-[--type] : image/ video, default : image
-[--test_img_path] : your custom image input image, default : ./data_input
+[--type] : image/ dir, default : dir
+[--test_img_path] : your custom image input image/dir path, default : ./data_input
 [--objface_results_dir] : where to save .obj face files, default : ./data_output
 ```
 
@@ -180,6 +187,16 @@ Below is argument list.
 <br>
 
 
+### 3. revision history
+
+* 21.06.04. extend input type(you can try not only image but also image directory)
+* 21.06.xx. extend gui program (use pyqt), input type(video)
+
+
+
+<br>
+<br>
+<br>
 
 # Citation
 ```

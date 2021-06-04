@@ -99,11 +99,13 @@ def sr_demo(opt):
     template_path = './SR_pretrain_models/FFHQ_template.npy'
 
     print('======> Loading images, crop and align faces.')
-    img_path = opt.test_img_path 
+    img_path = opt.test_img_path
 
-
-    img_list = glob.glob(img_path + '/' + '*.png')
-    img_list += glob.glob(img_path + '/' + '*.jpg')
+    if opt.type == "image" :
+        img_list = [img_path]
+    else :
+        img_list = glob.glob(img_path + '/' + '*.png')
+        img_list += glob.glob(img_path + '/' + '*.jpg')
 
     save_hq_dir = "./fuse_deep3d/data/input"
     os.makedirs(save_hq_dir, exist_ok=True)

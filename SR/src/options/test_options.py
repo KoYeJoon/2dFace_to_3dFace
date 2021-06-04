@@ -24,7 +24,7 @@ class TestOptions(BaseOptions):
         # To avoid cropping, the load_size should be the same as crop_size
         parser.set_defaults(load_size=parser.get_default('crop_size'))
         # parser for image/video
-        parser.add_argument('--type', type=str, default='image', help='what your input type image/video')
+        parser.add_argument('--type', type=str, default='dir', help='what your input type image/dir')
         # parser for deep3d code
         parser.add_argument('--use_pb', type=int, default=1, help='validation data folder')
         parser.add_argument('--objface_results_dir', type=str, default='./data_output', help='saves 3d face results here.')
