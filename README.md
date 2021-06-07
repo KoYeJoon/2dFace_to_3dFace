@@ -169,7 +169,8 @@ but you have to give argument(--type image --test_img_path ./your_img_path) when
 
 
 
-2. run !!
+2. run !!  
+   2-1. (Terminal version)
 ```
 python main.py [--arguments]
 ```
@@ -179,8 +180,14 @@ Below is argument list.
 [--type] : image/ dir, default : dir
 [--test_img_path] : your custom image input image/dir path, default : ./data_input
 [--objface_results_dir] : where to save .obj face files, default : ./data_output
-```
+```  
+  
+<br>  
+    2-2. (pyqt version)  
 
+```
+python qt_image.py
+```
 
 
 <br>

@@ -43,10 +43,11 @@ def preprocessing_with_mtcnn():
                     for i in features:
                         print(str(i[0]) + ' ' + str(i[1]), file=f)
                 #count += 1
-            file_n += 1
+
         else :
             print("*** %s%06d.jpg Fail to dectect keypoints with mtcnn ***" % (save_path, file_n))
             #count += 1
+        file_n += 1
 
 
 #
