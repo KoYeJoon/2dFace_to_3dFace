@@ -21,7 +21,13 @@ def detect_and_align_faces(img, face_detector, lmk_predictor, template_path, tem
         
     # Detect landmark points
     face_dets = face_detector(img, 1)
+
     assert len(face_dets) > 0, 'No faces detected'
+
+    face_dets_arr =[]
+    for i, d in enumerate(face_dets):
+        face_dets_arr.append([d.rect.left(), d.rect.top(), d.rect.right(), d.rect.bottom()])
+    draw_rectangle_dlib(face_dets_arr)
 
     aligned_faces = []
     tform_params = []
@@ -43,6 +49,7 @@ def detect_and_align_faces(img, face_detector, lmk_predictor, template_path, tem
         tmp_face = trans.warp(img, tform.inverse, output_shape=align_out_size, order=3)
         aligned_faces.append(tmp_face*255)
         tform_params.append(tform)
+
     return [aligned_faces, tform_params]
 
 
@@ -89,6 +96,20 @@ def save_imgs(img_list, save_dir):
         io.imsave(save_path, img.astype(np.uint8))
         count += 1
 
+
+def draw_rectangle_dlib(rects):
+    img = cv2.imread('./data_input/frame.jpg')
+    count = 1
+    for rect in rects :
+        x = rect[0]
+        y = rect[1]
+        w = rect[2]
+        h = rect[3]
+        img = cv2.rectangle(img, (x,y),(w,h),(255,0,0),3)
+        cv2.putText(img, str(count),(w,h), cv2.FONT_HERSHEY_COMPLEX,1.5, (0,255,255), 1)
+        count += 1
+    cv2.imwrite('./data_input/frame.jpg', img)
+
 def sr_demo(opt):
     opt.pretrain_model_path = "./SR_pretrain_models/SPARNetHD_V4_Attn2D_net_H-epoch10.pth"
 
@@ -124,7 +145,6 @@ def sr_demo(opt):
         hq_faces = enhance_faces(aligned_faces, enhance_model)
     # Save LQ parsing maps and enhanced faces
     # save_hq_dir = os.path.join(opt.results_dir, 'HQ')
-
 
         save_imgs(hq_faces, save_hq_dir)
     # print("hq_faces***************************************************************")
