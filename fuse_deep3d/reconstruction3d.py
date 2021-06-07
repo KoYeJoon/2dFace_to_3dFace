@@ -56,13 +56,12 @@ def restore_weights(sess, opt):
 def demo(args):
     # input and output folder
     preprocessing_with_mtcnn()
-    image_path = './lm_processed_data'
+    image_path = './fuse_deep3d/lm_processed_data'
     save_path = args.objface_results_dir
     if not os.path.exists(save_path):
         os.makedirs(save_path)
     img_list = glob.glob(image_path + '/' + '*.png')
     img_list += glob.glob(image_path + '/' + '*.jpg')
-
     # read BFM face model
     # transfer original BFM model to our model
     if not os.path.isfile('./BFM/BFM_model_front.mat'):

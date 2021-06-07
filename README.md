@@ -41,6 +41,10 @@ referred :
 * scipy
 * scikit-image
 * imgaug
+* opencv-python
+* dlib
+* tqdm
+* PyQt5==5.15.1
 ```
 
 or
@@ -61,6 +65,8 @@ $ cd tf_mesh_renderer
 $ git checkout ba27ea1798
 $ git checkout master WORKSPACE
 ```
+  
+  
 
 ##### 1-3. project directory structure
 ```
@@ -74,6 +80,9 @@ $ git checkout master WORKSPACE
 │      BFM_model_front.mat
 │      similarity_Lm3D_all.mat
 │   
+└───data_input
+│       video/image for input
+│
 └───network
 │       FaceReconModel.pb
 │   
@@ -112,15 +121,8 @@ $ git clone https://github.com/KoYeJoon/2dFace_to_3dFace.git
 $ cd 2dFace_to_3dFace
 ```
 
-#### for super resolution you have to ...
-
-##### blah lbhallahlbhlahlbhalhlabl
-
-<br>
-<br>
-
-#### for 3d reconstruction you have to ...
-
+#### for testing you have to ...
+  
 <br>
 
 ##### i) download Basel Face Model.
@@ -156,14 +158,27 @@ download in [this link](https://drive.google.com/file/d/176LCdUDxAj7T2awQ5knPMPa
 ### How to make 2d face to 3d face?
 you can use easily !!
 
+1. [optional] put in your custom image in ./data_input directory 
+```
+(Precautions)
+* you can change name of input_directory. 
+but if you change name, you have to give argument when you run main.py
+* if you want to give a input type='image', you can skip. 
+but you have to give argument(--type image --test_img_path ./your_img_path) when you run.
+```   
+
+
+
+2. run !!
 ```
 python main.py [--arguments]
 ```
 
 Below is argument list.
 ```
-[--test_img_path] : your custom image input image
-[--objface_results_dir] : where to save .obj face files
+[--type] : image/ dir, default : dir
+[--test_img_path] : your custom image input image/dir path, default : ./data_input
+[--objface_results_dir] : where to save .obj face files, default : ./data_output
 ```
 
 
@@ -173,6 +188,17 @@ Below is argument list.
 <br>
 
 
+### 3. revision history
+
+* 21.06.04. extend input type(you can try not only image but also image directory)
+* 21.06.xx. extend gui program (use pyqt), input type(image)
+* 21.06.xx. extend gui program, input type(image, video)
+
+
+
+<br>
+<br>
+<br>
 
 # Citation
 ```
@@ -181,5 +207,12 @@ Below is argument list.
     author={Yu Deng and Jiaolong Yang and Sicheng Xu and Dong Chen and Yunde Jia and Xin Tong},
     booktitle={IEEE Computer Vision and Pattern Recognition Workshops},
     year={2019}
+}
+
+@InProceedings{ChenSPARNet,
+    author = {Chen, Chaofeng and Gong, Dihong and Wang, Hao and Li, Zhifeng and Wong, Kwan-Yee K.},
+    title = {Learning Spatial Attention for Face Super-Resolution},
+    Journal = {IEEE Transactions on Image Processing (TIP)},
+    year = {2020}
 }
 ```

@@ -13,3 +13,7 @@ dependencies :
       - torch==1.5.1 #pip uninstall tensorboard
       - torchvision==0.6.1
       - imgaug
+      - opencv-python==4.3.0.36
+      - dlib
+      - tqdm
+      - PyQt5==5.15.1
