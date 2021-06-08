@@ -15,7 +15,7 @@ from options.test_options import TestOptions
 from models import create_model
 import glob
 
-def detect_and_align_faces(img, face_detector, lmk_predictor, template_path, template_scale=2, size_threshold=999):
+def detect_and_align_faces(img, face_detector, lmk_predictor, template_path, ver, template_scale=2, size_threshold=999):
     align_out_size = (512, 512)
     ref_points = np.load(template_path) / template_scale
         
@@ -24,10 +24,11 @@ def detect_and_align_faces(img, face_detector, lmk_predictor, template_path, tem
 
     assert len(face_dets) > 0, 'No faces detected'
 
-    face_dets_arr =[]
-    for i, d in enumerate(face_dets):
-        face_dets_arr.append([d.rect.left(), d.rect.top(), d.rect.right(), d.rect.bottom()])
-    draw_rectangle_dlib(face_dets_arr)
+    if ver == 'pyqt':
+        face_dets_arr =[]
+        for i, d in enumerate(face_dets):
+            face_dets_arr.append([d.rect.left(), d.rect.top(), d.rect.right(), d.rect.bottom()])
+        draw_rectangle_dlib(face_dets_arr)
 
     aligned_faces = []
     tform_params = []
@@ -112,7 +113,7 @@ def draw_rectangle_dlib(rects):
 
 def sr_demo(opt):
     opt.pretrain_model_path = "./SR_pretrain_models/SPARNetHD_V4_Attn2D_net_H-epoch10.pth"
-
+    ver = opt.pyqt_ver
     # opt = TestOptions().parse()
     #  face_detector = dlib.get_frontal_face_detector()
     face_detector = dlib.cnn_face_detection_model_v1('./SR_pretrain_models/mmod_human_face_detector.dat')
@@ -134,7 +135,7 @@ def sr_demo(opt):
     print('======> Save the enhanced faces.')
     for im in img_list :
         img = dlib.load_rgb_image(im)
-        aligned_faces, tform_params = detect_and_align_faces(img, face_detector, lmk_predictor, template_path)
+        aligned_faces, tform_params = detect_and_align_faces(img, face_detector, lmk_predictor, template_path, ver)
     # Save aligned LQ faces
     # save_lq_dir = os.path.join(opt.results_dir, 'LQ_faces')
     # os.makedirs(save_lq_dir, exist_ok=True)

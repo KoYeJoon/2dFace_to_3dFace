@@ -26,9 +26,10 @@ def preprocessing_with_mtcnn():
     img_list = sorted(glob.glob(image_path + '/' + '*.png'))
     img_list += sorted(glob.glob(image_path + '/' + '*.jpg'))
 
-    file_n = 1
+    file_n = 0
     for file in img_list:
         img = cv2.imread(file)
+        file_n += 1
         #img = cv2.cvtColor(cv2.imread(file), cv2.COLOR_BGR2RGB)
         detector = MTCNN()
         faces = detector.detect_faces(img)
@@ -47,7 +48,7 @@ def preprocessing_with_mtcnn():
         else :
             print("*** %s%06d.jpg Fail to dectect keypoints with mtcnn ***" % (save_path, file_n))
             #count += 1
-        file_n += 1
+
 
 
 #

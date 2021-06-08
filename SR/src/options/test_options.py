@@ -23,6 +23,8 @@ class TestOptions(BaseOptions):
         parser.set_defaults(model='test')
         # To avoid cropping, the load_size should be the same as crop_size
         parser.set_defaults(load_size=parser.get_default('crop_size'))
+        # pyqt_version_
+        parser.add_argument('--pyqt_ver', type=str, default='terminal', help='what your input type image/dir')
         # parser for image/video
         parser.add_argument('--type', type=str, default='dir', help='what your input type image/dir')
         # parser for deep3d code
