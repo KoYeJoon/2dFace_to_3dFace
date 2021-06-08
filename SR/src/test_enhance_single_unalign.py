@@ -123,8 +123,10 @@ def sr_demo(opt):
     print('======> Loading images, crop and align faces.')
     img_path = opt.test_img_path
 
-    if opt.type == "image" :
+    if opt.type == "image":
         img_list = [img_path]
+    elif ver == 'pyqt':
+        img_list = ['./data_input/frame.jpg']
     else :
         img_list = glob.glob(img_path + '/' + '*.png')
         img_list += glob.glob(img_path + '/' + '*.jpg')
