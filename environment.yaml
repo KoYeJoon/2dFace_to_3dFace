@@ -18,5 +18,4 @@ dependencies :
       - dlib
       - tqdm
       - PyQt5==5.15.1
-      - pyopengl
-      - pyqtgraph
+
