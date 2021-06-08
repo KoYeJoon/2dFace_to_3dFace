@@ -4,6 +4,7 @@ dependencies :
   - pip
   - tensorflow-gpu == 1.12.0
   - keras==2.2.4
+  - vtk
   - pip :
       - mtcnn
       - pillow
@@ -17,3 +18,5 @@ dependencies :
       - dlib
       - tqdm
       - PyQt5==5.15.1
+      - pyopengl
+      - pyqtgraph

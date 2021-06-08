@@ -7,6 +7,7 @@ import glob
 import platform
 import argparse
 from scipy.io import loadmat, savemat
+import time
 
 import sys
 import os
@@ -24,19 +25,6 @@ from SR.src.options.test_options import TestOptions
 
 is_windows = platform.system() == "Windows"
 
-#
-# def parse_args():
-#     desc = "2Dto3DFaceReconstruction"
-#     parser = argparse.ArgumentParser(description=desc)
-#     parser.add_argument('--pretrain_model_path', type=str, default=None, help='path for pre-trained model')
-#     parser.add_argument('--use_pb', type=int, default=1, help='validation data folder')
-#     parser.add_argument('--test_img_path', type=str, default='data/input', help='original images folder')
-#     parser.add_argument('--results_dir', type=str, default='output/pretrained',
-#                         help='custom path to save proccessed images and labels')
-#     parser.add_argument('--opt', type=str, default='test',
-#                         help='train/test')
-#
-#     return parser.parse_args()
 
 
 def restore_weights(sess, opt):
@@ -54,12 +42,16 @@ def restore_weights(sess, opt):
 
 
 def demo(args):
+    current = time.time()
     # input and output folder
     preprocessing_with_mtcnn()
     image_path = './fuse_deep3d/lm_processed_data'
     save_path = args.objface_results_dir
+
     if not os.path.exists(save_path):
         os.makedirs(save_path)
+
+
     img_list = glob.glob(image_path + '/' + '*.png')
     img_list += glob.glob(image_path + '/' + '*.jpg')
     # read BFM face model

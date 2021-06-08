@@ -18,7 +18,7 @@ Later , model image will be attached.
 
 <pre style="color:#fa8072">
 referred : 
-    super resolution - [model name] : link
+    super resolution - sparNet : [click to link](https://github.com/chaofengc/Face-SPARNet)
     3d reconstruction - deep3d : [click to link](https://github.com/microsoft/Deep3DFaceReconstruction, "deep3d link")
 </pre>
 
@@ -29,7 +29,7 @@ referred :
 ##### 1-1. Install Dependencies
 
 ```
-* conda create -n face3d python=3.6 
+* conda create -n face3d python=3.6
 * conda activate face3d
 * tensorflow-gpu == 1.12.0 (conda install tensorflow-gpu == 1.12.0 )
 * keras==2.2.4
@@ -64,6 +64,14 @@ $ git clone https://github.com/google/tf_mesh_renderer.git
 $ cd tf_mesh_renderer
 $ git checkout ba27ea1798
 $ git checkout master WORKSPACE
+```  
+  
+<br />
+
+set <b>-D_GLIBCXX_USE_CXX11_ABI=1</b> in ./mesh_renderer/kernels/BUILD  
+  
+```
+$ bazel test ...
 ```
   
   
@@ -87,7 +95,7 @@ $ git checkout master WORKSPACE
 │       FaceReconModel.pb
 │   
 └───fuse_deep3d
-│        rasterize_triangles_kernel.soata
+│        data
 │        │     └───input # SR results images will be saved here
 │        │   
 │        └───renderer
@@ -107,11 +115,6 @@ $ git checkout master WORKSPACE
 ...
 ```
 
-set <b>-D_GLIBCXX_USE_CXX11_ABI=1</b> in ./mesh_renderer/kernels/BUILD
-
-```
-$ bazel test ...
-```
 
 ### 2. What do you need to make 3d reconstruction face? 
 
@@ -131,7 +134,7 @@ download "01_MorphableModel.mat" in [this site](https://faces.dmi.unibas.ch/bfm/
 <br>
 
 ##### ii) download CoarseData 
-Download Coarse data in the first row of Introduction part in [their repository](https://github.com/Juyong/3DFace). 
+Download Coarse data in the first row of Introduction part in [their repository](https://github.com/Juyong/3DFace) and put "Exp_Pca.bin" into ./fuse_deep3d/BFM. 
 
 <br>
 
@@ -147,7 +150,7 @@ Download Face-SPARNet pretrained models in from the following link and put then 
 
 <br>
 
-##### v) (optional) if you want to get pre-trained model, download pre-trained reconstruction network. --> 우리 모델이 좋으면 우리 모델로 나중에 수정 
+##### v) if you want to get pre-trained model, download pre-trained reconstruction network. --> 우리 모델이 좋으면 우리 모델로 나중에 수정 
 download in [this link](https://drive.google.com/file/d/176LCdUDxAj7T2awQ5knPMPawq5Q2RUWM/view, "pretrained model") and put "FaceReconModel.pb" into ./network subfolder. 
 
 
