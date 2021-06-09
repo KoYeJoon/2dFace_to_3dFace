@@ -46,7 +46,7 @@ def preprocessing_with_mtcnn():
                 #count += 1
 
         else :
-            print("*** %s%06d.jpg Fail to dectect keypoints with mtcnn ***" % (save_path, file_n))
+            print("*** %s%06d.jpg Fail to detect keypoints with mtcnn ***" % (save_path, file_n))
             #count += 1
 
 

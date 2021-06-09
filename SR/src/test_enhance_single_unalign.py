@@ -107,7 +107,7 @@ def draw_rectangle_dlib(rects):
         w = rect[2]
         h = rect[3]
         img = cv2.rectangle(img, (x,y),(w,h),(255,0,0),3)
-        cv2.putText(img, str(count),(w,h), cv2.FONT_HERSHEY_COMPLEX,1.5, (0,255,255), 1)
+        cv2.putText(img, str(count),(w,h), cv2.FONT_HERSHEY_COMPLEX,1.3, (0,255,255), 2)
         count += 1
     cv2.imwrite('./data_input/frame.jpg', img)
 
