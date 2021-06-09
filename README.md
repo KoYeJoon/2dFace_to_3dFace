@@ -189,7 +189,7 @@ Below is argument list.
     2-2. (pyqt version)  
 
 ```
-python qt_image.py
+python qt.py
 ```
 
 
@@ -201,7 +201,7 @@ python qt_image.py
 ### 3. revision history
 
 * 21.06.04. extend input type(you can try not only image but also image directory)
-* 21.06.xx. extend gui program (use pyqt), input type(image)
+* 21.06.07. extend gui program (use pyqt), input type(image)
 * 21.06.xx. extend gui program, input type(image, video)
 
 

@@ -104,7 +104,7 @@ class MainWindow(QMainWindow, form_class):
             self.btn_play.setEnabled(bool)
         elif str == 'btn_video_file':
             self.btn_video_file.setEnabled(bool)
-        elif str == 'btn_video_file':
+        elif str == 'btn_video_capture':
             self.btn_video_capture.setEnabled(bool)
         else:
             raise Exception('btn invalid')
@@ -113,7 +113,7 @@ class MainWindow(QMainWindow, form_class):
         global img_path
         img_path_buffer = QFileDialog.getOpenFileName(self, None, None, "Image files (*.png *.jpg)")
 
-        if img_path_buffer[0] is not '' and img_path_buffer != img_path:
+        if img_path_buffer[0] is not '':
             img_path = img_path_buffer
             self.label_file_path.setText(img_path[0])
 
@@ -128,6 +128,7 @@ class MainWindow(QMainWindow, form_class):
                 self.btn_upload.setEnabled(True)
                 self.btn_file_reset.setEnabled(True)
                 return
+
     def videofileFunction(self):
         global video_path
         video_path_buffer = QFileDialog.getOpenFileName(self, None, None, "Video files (*.mp4)")
@@ -172,6 +173,7 @@ class MainWindow(QMainWindow, form_class):
         self.img_load()
         # if os.path.isfile("./data_input/frame.jpg"):
         #     os.remove("./data_input/frame.jpg")
+        self.btn_video_file.setEnabled(False)
         self.btn_upload.setEnabled(False)
         self.btn_file.setEnabled(False)
         self.btn_file_reset.setEnabled(True)
@@ -218,6 +220,10 @@ class MainWindow(QMainWindow, form_class):
         # fuse_3d/lm_processed_data 에 data 있으면 삭제
         if os.path.isdir('./fuse_deep3d/lm_processed_data'):
             shutil.rmtree('./fuse_deep3d/lm_processed_data')
+        if os.path.isdir('./data_output'):
+            shutil.rmtree('./data_output')
+
+
 
         os.system('python main.py --pyqt_ver pyqt')
         self.img_load()
@@ -234,12 +240,15 @@ class MainWindow(QMainWindow, form_class):
         img_list = glob.glob('./fuse_deep3d/data/input/' + '*.png')
         img_list += glob.glob('./fuse_deep3d/data/input/' + '*.jpg')
 
-
         obj_path = './data_output/%06d_mesh.obj' % input_object
         if obj_path in obj_list :
             self.btn_object_reset.setEnabled(True)
             self.btn_confirm.setEnabled(False)
             os.system('meshlab '+obj_path)
+        elif input_object < 1 and input_object > len(img_list):
+            reply = QMessageBox.question(self, 'Out of Boundary', 'out of boundary', QMessageBox.Ok)
+        else :
+            reply = QMessageBox.question(self, "doesn't detected ", 'It does not detected, please try another number', QMessageBox.Ok)
 
 
     def object_resetFunction(self):
@@ -250,19 +259,14 @@ class MainWindow(QMainWindow, form_class):
 
     def file_resetFunction(self):
         self.flush()
-        # self.horizontalSlider.setValue(0)
-        # self.horizontalSlider.setMinimum(0)
-        # self.horizontalSlider.setMaximum(0)
-        # global cap
-        # cap.release()
-        # cv2.destroyAllWindows()
         self.btn_file.setEnabled(True)
         self.btn_video_file.setEnabled(True)
+        self.btn_video_capture.setEnabled(False)
         pixmap = QPixmap()
         self.label_mainscreen.setPixmap(pixmap)
         self.label_file_path.setText('File Path')
         self.label_file_path_2.setText('File Path')
-
+        self.label_end_frame.setText('end')
 
     def video2Frame(self):
         signal = SignalOfTrack()
@@ -342,8 +346,6 @@ class MainWindow(QMainWindow, form_class):
 
                 if slider_moved:
                     cap.set(cv2.CAP_PROP_POS_FRAMES, jump_to_frame)
-                    tracker.tracks = []
-                    tracker._next_id = 1
                     ret, img = cap.read()
                     if ret:
                         h, w, ch = img.shape
@@ -366,7 +368,6 @@ class MainWindow(QMainWindow, form_class):
                 if not pause:
                     token = 1
                     break
-
             if token:
                 token = 0
                 continue
@@ -407,7 +408,6 @@ class MainWindow(QMainWindow, form_class):
     def play(self):
         global pause
         if not pause:
-
             self.horizontalSlider.setEnabled(True)
             pause = True
             self.btn_play.setChecked(False)
@@ -437,26 +437,13 @@ class MainWindow(QMainWindow, form_class):
         # QMessageBox.about(self, "Video ended", "This is the last frame")  # focus issue don't use
         return
 
-    # def speed_up(self):
-    #     self.btn_down.setEnabled(True)
-    #     global set_speed
-    #     set_speed += 1
-    #     self.label_speed.setText("speed  x%d " % set_speed)
-    #     return
-    #
-    # def speed_down(self):
-    #     global set_speed
-    #     if set_speed == 2:
-    #         set_speed = 1
-    #         self.label_speed.setText("speed  x%d " % set_speed)
-    #         self.btn_down.setEnabled(False)
-    #         return
-    #     set_speed -= 1
-    #     self.label_speed.setText("speed  x%d " % set_speed)
-    #     return
-
     def slider_pressed(self):
-        self.btn_tab.setEnabled(False)
+        signal = SignalOfTrack()
+        signal.frameCount.connect(self.slider_control)
+        signal.slider_run(self.horizontalSlider.value())
+        global framecount
+        framecount = self.horizontalSlider.value()
+        pass
 
     def slider_moved(self):
         global slider_moved, jump_to_frame, end
@@ -473,7 +460,6 @@ class MainWindow(QMainWindow, form_class):
         objimg = np.array([])
 
     def save_capture(self):
-
         int_framecount = int(framecount)
         print(int_framecount)
 

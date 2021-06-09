@@ -305,6 +305,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="btn_video_start">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>810</x>
@@ -318,6 +321,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="btn_video_capture">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>920</x>
