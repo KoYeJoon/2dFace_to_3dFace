@@ -34,6 +34,8 @@ slider_moved = False
 jumped = False
 token = 0
 
+flush = False
+
 class SignalOfTrack(QObject):
     frameCount = pyqtSignal(int)
     buttonName = pyqtSignal(str, bool)
@@ -185,7 +187,6 @@ class MainWindow(QMainWindow, form_class):
         global cap
         cap = cv2.VideoCapture(video_path[0])  # 저장된 영상 가져오기 프레임별로 계속 가져오는 듯
         k = cap.isOpened()
-
         if k == False:
             cap.open(video_path[0])
         self.ret, self.frame = cap.read()
@@ -205,6 +206,7 @@ class MainWindow(QMainWindow, form_class):
         self.btn_upload_2.setEnabled(False)
 
         self.btn_file_reset.setEnabled(True)
+        self.btn_video_start.setEnabled(True)
         return
 
     def startFunction(self):
@@ -247,6 +249,13 @@ class MainWindow(QMainWindow, form_class):
 
 
     def file_resetFunction(self):
+        self.flush()
+        # self.horizontalSlider.setValue(0)
+        # self.horizontalSlider.setMinimum(0)
+        # self.horizontalSlider.setMaximum(0)
+        global cap
+        cap.release()
+        cv2.destroyAllWindows()
         self.btn_file.setEnabled(True)
         self.btn_video_file.setEnabled(True)
         pixmap = QPixmap()
@@ -254,12 +263,13 @@ class MainWindow(QMainWindow, form_class):
         self.label_file_path.setText('File Path')
         self.label_file_path_2.setText('File Path')
 
+
     def video2Frame(self):
         signal = SignalOfTrack()
         signal.frameCount.connect(self.slider_control)
         signal.buttonName.connect(self.btn_control)
         signal.pixmapImage.connect(self.pixmap_update)
-
+        global cap
         cap = cv2.VideoCapture(video_path[0])
         k = cap.isOpened()
         if k == False:
@@ -427,23 +437,23 @@ class MainWindow(QMainWindow, form_class):
         # QMessageBox.about(self, "Video ended", "This is the last frame")  # focus issue don't use
         return
 
-    def speed_up(self):
-        self.btn_down.setEnabled(True)
-        global set_speed
-        set_speed += 1
-        self.label_speed.setText("speed  x%d " % set_speed)
-        return
-
-    def speed_down(self):
-        global set_speed
-        if set_speed == 2:
-            set_speed = 1
-            self.label_speed.setText("speed  x%d " % set_speed)
-            self.btn_down.setEnabled(False)
-            return
-        set_speed -= 1
-        self.label_speed.setText("speed  x%d " % set_speed)
-        return
+    # def speed_up(self):
+    #     self.btn_down.setEnabled(True)
+    #     global set_speed
+    #     set_speed += 1
+    #     self.label_speed.setText("speed  x%d " % set_speed)
+    #     return
+    #
+    # def speed_down(self):
+    #     global set_speed
+    #     if set_speed == 2:
+    #         set_speed = 1
+    #         self.label_speed.setText("speed  x%d " % set_speed)
+    #         self.btn_down.setEnabled(False)
+    #         return
+    #     set_speed -= 1
+    #     self.label_speed.setText("speed  x%d " % set_speed)
+    #     return
 
     def slider_pressed(self):
         self.btn_tab.setEnabled(False)
@@ -473,6 +483,51 @@ class MainWindow(QMainWindow, form_class):
         cv2.imwrite("./data_input/frame.jpg", frame)
 
         self.btn_start.setEnabled(True)
+
+
+    def flush(self):
+        global input_object
+        global end
+        global flush
+        global pause
+
+        if pause:
+            pass
+        else:
+            self.play()
+
+        reply = QMessageBox.question(self, 'Reset', 'Do you want to proceed?', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+
+        if reply == QMessageBox.Yes:
+            flush = True
+            # self.label.setText("File Path")
+            if os.path.isfile("./data_input/frame.jpg"):
+                os.remove("./data_input/frame.jpg")
+            self.img_load()
+            pixmap = QPixmap("./data_input/frame.jpg")
+            self.label_mainscreen.setPixmap(pixmap)
+            self.btn_file.setEnabled(True)
+            self.btn_video_file.setEnabled(True)
+            self.btn_upload.setEnabled(False)
+            self.btn_upload_2.setEnabled(False)
+
+            self.btn_file_reset.setEnabled(False)
+            self.btn_play.setChecked(False)
+            self.btn_play.setEnabled(False)
+            self.btn_video_start.setEnabled(False)
+            end = False
+            # self.horizontalSlider.setValue(1)
+            self.horizontalSlider.setValue(0)
+            self.horizontalSlider.setMinimum(0)
+            self.horizontalSlider.setMaximum(0)
+            self.horizontalSlider.setEnabled(False)
+            return
+        else:
+            if end:
+                self.btn_file_reset.setEnabled(True)
+                return
+            else:
+                return
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     Annotation_tool = MainWindow()
