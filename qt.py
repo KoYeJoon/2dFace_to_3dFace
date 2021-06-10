@@ -13,6 +13,7 @@ import glob
 from time import sleep
 import threading
 import shutil
+import dlib
 
 
 form_class = uic.loadUiType("./project.ui")[0]
@@ -78,6 +79,8 @@ class MainWindow(QMainWindow, form_class):
 
         self.btn_video_capture.clicked.connect(self.save_capture)
 
+        self.spinBox_object_num.setValue(1)
+
     @pyqtSlot(QPixmap)
     def pixmap_update(self, QPixmap):
         self.label_mainscreen.setPixmap(QPixmap)
@@ -132,7 +135,7 @@ class MainWindow(QMainWindow, form_class):
     def videofileFunction(self):
         global video_path
         video_path_buffer = QFileDialog.getOpenFileName(self, None, None, "Video files (*.mp4)")
-        if video_path_buffer[0] is not '' and video_path_buffer != video_path:
+        if video_path_buffer[0] is not '':
             video_path = video_path_buffer
             self.label_file_path_2.setText(video_path[0])
             # self.vid_load()
@@ -171,8 +174,6 @@ class MainWindow(QMainWindow, form_class):
         cv2.imwrite("./data_input/frame.jpg", img)
 
         self.img_load()
-        # if os.path.isfile("./data_input/frame.jpg"):
-        #     os.remove("./data_input/frame.jpg")
         self.btn_video_file.setEnabled(False)
         self.btn_upload.setEnabled(False)
         self.btn_file.setEnabled(False)
@@ -223,13 +224,19 @@ class MainWindow(QMainWindow, form_class):
         if os.path.isdir('./data_output'):
             shutil.rmtree('./data_output')
 
+        img = cv2.imread('./data_input/frame.jpg', cv2.IMREAD_COLOR)
+        face_detector = dlib.cnn_face_detection_model_v1('./SR_pretrain_models/mmod_human_face_detector.dat')
+        face_dets = face_detector(img, 1)
 
+        if len(face_dets) > 0 :
+            os.system('python main.py --pyqt_ver pyqt')
+            self.img_load()
+            self.btn_start.setEnabled(False)
+            self.btn_confirm.setEnabled(True)
+            obj_list = glob.glob('./data_output/' + '*.obj')
+        else :
+            reply = QMessageBox.question(self, "can't detect face", "we can't detect face", QMessageBox.Ok)
 
-        os.system('python main.py --pyqt_ver pyqt')
-        self.img_load()
-        self.btn_start.setEnabled(False)
-        self.btn_confirm.setEnabled(True)
-        obj_list = glob.glob('./data_output/' + '*.obj')
 
     def confirmFunction(self):
         global input_object
@@ -248,7 +255,7 @@ class MainWindow(QMainWindow, form_class):
         elif input_object < 1 and input_object > len(img_list):
             reply = QMessageBox.question(self, 'Out of Boundary', 'out of boundary', QMessageBox.Ok)
         else :
-            reply = QMessageBox.question(self, "doesn't detected ", 'It does not detected, please try another number', QMessageBox.Ok)
+            reply = QMessageBox.question(self, "can't make 3d reconstruction", "It can't make 3d reconstruction, please try another number", QMessageBox.Ok)
 
 
     def object_resetFunction(self):
@@ -428,13 +435,9 @@ class MainWindow(QMainWindow, form_class):
 
     def video_end(self):
         global end
-        global set_speed
         self.horizontalSlider.setValue(self.horizontalSlider.maximum())
         end = True
-        set_speed = 1
-        self.label_speed.setText("speed  x%d " % set_speed)
         self.btn_file_reset.setEnabled(True)
-        # QMessageBox.about(self, "Video ended", "This is the last frame")  # focus issue don't use
         return
 
     def slider_pressed(self):
@@ -453,7 +456,6 @@ class MainWindow(QMainWindow, form_class):
 
     def slider_released(self):
         global slider_moved, jump_to_frame, escape, objimg
-        # self.centralwidget.setFocus()
         slider_moved = True
         jump_to_frame = self.horizontalSlider.value()
         escape = 1
@@ -482,11 +484,7 @@ class MainWindow(QMainWindow, form_class):
         else:
             self.play()
 
-        # reply = QMessageBox.question(self, 'Reset', 'Do you want to proceed?', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        #
-        # if reply == QMessageBox.Yes:
         flush = True
-            # self.label.setText("File Path")
         if os.path.isfile("./data_input/frame.jpg"):
             os.remove("./data_input/frame.jpg")
         self.img_load()
@@ -497,23 +495,20 @@ class MainWindow(QMainWindow, form_class):
         self.btn_upload.setEnabled(False)
         self.btn_upload_2.setEnabled(False)
 
+        self.spinBox_object_num.setValue(1)
+        self.btn_confirm.setEnabled(False)
+        self.btn_object_reset.setEnabled(False)
         self.btn_file_reset.setEnabled(False)
         self.btn_play.setChecked(False)
         self.btn_play.setEnabled(False)
         self.btn_video_start.setEnabled(False)
         end = False
-            # self.horizontalSlider.setValue(1)
         self.horizontalSlider.setValue(0)
         self.horizontalSlider.setMinimum(0)
         self.horizontalSlider.setMaximum(0)
         self.horizontalSlider.setEnabled(False)
         return
-        # else:
-        if end:
-            self.btn_file_reset.setEnabled(True)
-            return
-        else:
-            return
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     Annotation_tool = MainWindow()

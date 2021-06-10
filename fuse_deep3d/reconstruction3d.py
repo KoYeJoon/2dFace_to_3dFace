@@ -1,12 +1,6 @@
 import tensorflow as tf
-import numpy as np
-from PIL import Image
-import os
-import io
 import glob
 import platform
-import argparse
-from scipy.io import loadmat, savemat
 import time
 
 import sys
@@ -18,9 +12,6 @@ from src_3d.preprocess_img import align_img
 from src_3d.utils import *
 from src_3d.face_decoder import Face3D
 from src_3d.options import Option
-import PIL
-
-from SR.src.options.test_options import TestOptions
 
 
 is_windows = platform.system() == "Windows"
