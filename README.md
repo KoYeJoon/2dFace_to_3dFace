@@ -7,7 +7,10 @@
 
 
 This is the project about super resolution, face reconstruction, face frontalization.  
+we merged [sparNet](https://github.com/chaofengc/Face-SPARNet) and [deep3d model](https://github.com/microsoft/Deep3DFaceReconstruction).  
+  
 If you give image which contained one or more person to model, the model will produce 3d reconstruction face and frontalization face for image.
+
 
 <br>
 <b>(the system structure)</b>
@@ -18,9 +21,9 @@ Later , model image will be attached.
 <br>
 
 
-(referred)  
-    super resolution - sparNet : [click to link](https://github.com/chaofengc/Face-SPARNet)  
-    3d reconstruction - deep3d : [click to link](https://github.com/microsoft/Deep3DFaceReconstruction)
+### Reference 
+super resolution - sparNet : [click to link](https://github.com/chaofengc/Face-SPARNet)  
+3d reconstruction - deep3d : [click to link](https://github.com/microsoft/Deep3DFaceReconstruction)
 
 
 <br>
@@ -211,6 +214,23 @@ python qt.py
 <br>
 <br>
 <br>
+
+  
+### 4. Things to improve
+* Currently, there are many overlapping codes, with the face recognition process. It seems necessary to modify the code for this part to make the program lighter.
+* In the case of video, it has the advantage of collecting multiple photos of one person. we can think about whether there is 
+a way to use this advantage to make 3d reconstruction more precise.
+  
+* In the case of deep3d, we can see that 3d reconstruction was not done well for Asians, which needs to be
+supplemented by further research.
+  
+
+
+
+<br>
+<br>
+<br>
+
 
 # Citation
 ```
