@@ -14,13 +14,14 @@ If you give image which contained one or more person to model, the model will pr
 <br>
 Later , model image will be attached.
 
+
 <br>
 
-<pre style="color:#fa8072">
-referred : 
-    super resolution - sparNet : [click to link](https://github.com/chaofengc/Face-SPARNet)
-    3d reconstruction - deep3d : [click to link](https://github.com/microsoft/Deep3DFaceReconstruction, "deep3d link")
-</pre>
+
+(referred)  
+    super resolution - sparNet : [click to link](https://github.com/chaofengc/Face-SPARNet)  
+    3d reconstruction - deep3d : [click to link](https://github.com/microsoft/Deep3DFaceReconstruction)
+
 
 <br>
 
@@ -57,7 +58,7 @@ or
 
 ##### 1-2. compile tf_mesh_renderer
 
-we referred to <b>[this site](https://github.com/microsoft/Deep3DFaceReconstruction, "deep3d link") </b>as the link.
+we referred to <b>[this site](https://github.com/microsoft/Deep3DFaceReconstruction) </b>as the link.
 
 ```
 $ git clone https://github.com/google/tf_mesh_renderer.git
@@ -129,7 +130,7 @@ $ cd 2dFace_to_3dFace
 <br>
 
 ##### i) download Basel Face Model.
-download "01_MorphableModel.mat" in [this site](https://faces.dmi.unibas.ch/bfm/main.php?nav=1-2&id=downloads, "BFM Model Site") and put into ./fuse_deep3d/BFM
+download "01_MorphableModel.mat" in [this site](https://faces.dmi.unibas.ch/bfm/main.php?nav=1-2&id=downloads) and put into ./fuse_deep3d/BFM
 
 <br>
 
@@ -150,8 +151,8 @@ Download Face-SPARNet pretrained models in from the following link and put then 
 
 <br>
 
-##### v) if you want to get pre-trained model, download pre-trained reconstruction network. --> 우리 모델이 좋으면 우리 모델로 나중에 수정 
-download in [this link](https://drive.google.com/file/d/176LCdUDxAj7T2awQ5knPMPawq5Q2RUWM/view, "pretrained model") and put "FaceReconModel.pb" into ./network subfolder. 
+##### v) if you want to get pre-trained model, download pre-trained reconstruction network. 
+download in [this link](https://drive.google.com/file/d/176LCdUDxAj7T2awQ5knPMPawq5Q2RUWM/view) and put "FaceReconModel.pb" into ./network subfolder. 
 
 
 <br>
@@ -161,7 +162,8 @@ download in [this link](https://drive.google.com/file/d/176LCdUDxAj7T2awQ5knPMPa
 ### How to make 2d face to 3d face?
 you can use easily !!
 
-1. [optional] put in your custom image in ./data_input directory 
+1. use terminal
+   1-1. put your images in ./data_input directory
 ```
 (Precautions)
 * you can change name of input_directory. 
@@ -169,11 +171,9 @@ but if you change name, you have to give argument when you run main.py
 * if you want to give a input type='image', you can skip. 
 but you have to give argument(--type image --test_img_path ./your_img_path) when you run.
 ```   
+ 
+   1-2. run!!
 
-
-
-2. run !!  
-   2-1. (Terminal version)
 ```
 python main.py [--arguments]
 ```
@@ -186,8 +186,10 @@ Below is argument list.
 ```  
   
 <br>  
-    2-2. (pyqt version)  
 
+
+2. use pyqt
+   2-1. run !!
 ```
 python qt.py
 ```
@@ -202,7 +204,7 @@ python qt.py
 
 * 21.06.04. extend input type(you can try not only image but also image directory)
 * 21.06.07. extend gui program (use pyqt), input type(image)
-* 21.06.xx. extend gui program, input type(image, video)
+* 21.06.10. extend gui program, input type(image, video)
 
 
 
