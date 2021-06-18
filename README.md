@@ -15,7 +15,8 @@ If you give image which contained one or more person to model, the model will pr
 <br>
 <b>(the system structure)</b>
 <br>
-Later , model image will be attached.
+
+![model structure](./images/model_structure.png)
 
 
 <br>
